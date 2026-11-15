@@ -1,0 +1,38 @@
+{
+ "data": {
+  "node": {
+   "agentIssues": [
+    {
+     "title": "Opus turns carry very large prompt contexts",
+     "severity": "high",
+     "status": "OPEN",
+     "entity": "claude-opus-5-5",
+     "estimatedSavingsUsd": null,
+     "projectId": "TW9kZWw6MTAwNTpkZW1v",
+     "projectName": "claude-code",
+     "isCleared": false
+    },
+    {
+     "title": "grok-4.3 reasoning model used for trivially simple agent tasks",
+     "severity": "low",
+     "status": "OPEN",
+     "entity": "grok-4.3",
+     "estimatedSavingsUsd": null,
+     "projectId": "TW9kZWw6MTAwNjpkZW1v",
+     "projectName": "jumpers-agent-pilot",
+     "isCleared": false
+    },
+    {
+     "title": "Resolved example",
+     "severity": "high",
+     "status": "RESOLVED",
+     "entity": "claude-opus-5-5",
+     "estimatedSavingsUsd": 12.5,
+     "projectId": "TW9kZWw6MTAwNTpkZW1v",
+     "projectName": "claude-code",
+     "isCleared": false
+    }
+   ]
+  }
+ }
+}

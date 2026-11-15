@@ -1,0 +1,232 @@
+{
+ "data": {
+  "node": {
+   "pivotData": {
+    "groupedDimension": "attributes.user.id",
+    "columns": [
+     {
+      "id": "attributes.llm.cost.total_sum",
+      "dimension": "attributes.llm.cost.total",
+      "aggregation": "sum"
+     },
+     {
+      "id": "attributes.llm.token_count.total_sum",
+      "dimension": "attributes.llm.token_count.total",
+      "aggregation": "sum"
+     },
+     {
+      "id": "attributes.session.id_cardinality",
+      "dimension": "attributes.session.id",
+      "aggregation": "cardinality"
+     }
+    ],
+    "rows": [
+     {
+      "groupValue": "p.nair",
+      "cells": [
+       {
+        "columnId": "attributes.llm.cost.total_sum",
+        "value": 262.7257350000001
+       },
+       {
+        "columnId": "attributes.llm.token_count.total_sum",
+        "value": 15573473
+       },
+       {
+        "columnId": "attributes.session.id_cardinality",
+        "value": 17
+       }
+      ]
+     },
+     {
+      "groupValue": "j.okafor",
+      "cells": [
+       {
+        "columnId": "attributes.llm.cost.total_sum",
+        "value": 32.022891
+       },
+       {
+        "columnId": "attributes.llm.token_count.total_sum",
+        "value": 2707917
+       },
+       {
+        "columnId": "attributes.session.id_cardinality",
+        "value": 6
+       }
+      ]
+     },
+     {
+      "groupValue": "r.silva",
+      "cells": [
+       {
+        "columnId": "attributes.llm.cost.total_sum",
+        "value": 30.912896999999997
+       },
+       {
+        "columnId": "attributes.llm.token_count.total_sum",
+        "value": 2787771
+       },
+       {
+        "columnId": "attributes.session.id_cardinality",
+        "value": 7
+       }
+      ]
+     },
+     {
+      "groupValue": "s.ahmed",
+      "cells": [
+       {
+        "columnId": "attributes.llm.cost.total_sum",
+        "value": 20.727461999999996
+       },
+       {
+        "columnId": "attributes.llm.token_count.total_sum",
+        "value": 3023410
+       },
+       {
+        "columnId": "attributes.session.id_cardinality",
+        "value": 8
+       }
+      ]
+     },
+     {
+      "groupValue": "h.tanaka",
+      "cells": [
+       {
+        "columnId": "attributes.llm.cost.total_sum",
+        "value": 11.893209
+       },
+       {
+        "columnId": "attributes.llm.token_count.total_sum",
+        "value": 3480703
+       },
+       {
+        "columnId": "attributes.session.id_cardinality",
+        "value": 9
+       }
+      ]
+     },
+     {
+      "groupValue": "m.chen",
+      "cells": [
+       {
+        "columnId": "attributes.llm.cost.total_sum",
+        "value": 7.891281000000001
+       },
+       {
+        "columnId": "attributes.llm.token_count.total_sum",
+        "value": 2332343
+       },
+       {
+        "columnId": "attributes.session.id_cardinality",
+        "value": 6
+       }
+      ]
+     },
+     {
+      "groupValue": "l.moreau",
+      "cells": [
+       {
+        "columnId": "attributes.llm.cost.total_sum",
+        "value": 5.289312000000001
+       },
+       {
+        "columnId": "attributes.llm.token_count.total_sum",
+        "value": 1565984
+       },
+       {
+        "columnId": "attributes.session.id_cardinality",
+        "value": 5
+       }
+      ]
+     },
+     {
+      "groupValue": "k.park",
+      "cells": [
+       {
+        "columnId": "attributes.llm.cost.total_sum",
+        "value": 4.9523399999999995
+       },
+       {
+        "columnId": "attributes.llm.token_count.total_sum",
+        "value": 1472788
+       },
+       {
+        "columnId": "attributes.session.id_cardinality",
+        "value": 5
+       }
+      ]
+     },
+     {
+      "groupValue": "e.rossi",
+      "cells": [
+       {
+        "columnId": "attributes.llm.cost.total_sum",
+        "value": 3.9466889999999997
+       },
+       {
+        "columnId": "attributes.llm.token_count.total_sum",
+        "value": 1176415
+       },
+       {
+        "columnId": "attributes.session.id_cardinality",
+        "value": 4
+       }
+      ]
+     },
+     {
+      "groupValue": "d.ivanova",
+      "cells": [
+       {
+        "columnId": "attributes.llm.cost.total_sum",
+        "value": 3.524387
+       },
+       {
+        "columnId": "attributes.llm.token_count.total_sum",
+        "value": 1210505
+       },
+       {
+        "columnId": "attributes.session.id_cardinality",
+        "value": 6
+       }
+      ]
+     },
+     {
+      "groupValue": "a.kowalski",
+      "cells": [
+       {
+        "columnId": "attributes.llm.cost.total_sum",
+        "value": 2.1375059999999997
+       },
+       {
+        "columnId": "attributes.llm.token_count.total_sum",
+        "value": 120606
+       },
+       {
+        "columnId": "attributes.session.id_cardinality",
+        "value": 11
+       }
+      ]
+     },
+     {
+      "groupValue": "t.mensah",
+      "cells": [
+       {
+        "columnId": "attributes.llm.cost.total_sum",
+        "value": 0.860996
+       },
+       {
+        "columnId": "attributes.llm.token_count.total_sum",
+        "value": 432450
+       },
+       {
+        "columnId": "attributes.session.id_cardinality",
+        "value": 5
+       }
+      ]
+     }
+    ]
+   }
+  }
+ }
+}

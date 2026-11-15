@@ -1,0 +1,63 @@
+{
+  "name": "acme",
+  "tz_offset_hours": 9,
+  "currency": "USD",
+  "projects": [
+    {
+      "id": "TW9kZWw6MTAwMTpkZW1v",
+      "name": "claude-code-finops-demo-live",
+      "space_id": "U3BhY2U6MTAwMTpkZW1v",
+      "space_name": "workshop",
+      "widgets": {
+        "attributes.session.id": "UGl2b3RUYWJsZVdpZGdldDoxMDAxOmRlbW8=",
+        "attributes.user.id": "UGl2b3RUYWJsZVdpZGdldDoxMDAyOmRlbW8="
+      }
+    }
+  ],
+  "dimensions": [
+    {
+      "name": "org",
+      "levels": [
+        {
+          "name": "user",
+          "source": "attribute:user.id"
+        },
+        {
+          "name": "team",
+          "source": "map",
+          "mapping": {
+            "file": "acme/org_chart.csv",
+            "from": "user_id",
+            "to": "team"
+          }
+        },
+        {
+          "name": "cost_center",
+          "source": "map",
+          "mapping": {
+            "file": "acme/org_chart.csv",
+            "from": "team",
+            "to": "cost_center"
+          }
+        }
+      ]
+    }
+  ],
+  "budgets": [
+    {
+      "dimension": "org",
+      "level": "team",
+      "file": "acme/budgets.csv",
+      "value_column": "team"
+    }
+  ],
+  "unit": "session",
+  "outcome": {
+    "rule": "root_status"
+  },
+  "segments": [],
+  "cost_agent": true,
+  "charts": {
+    "workshop": "https://app.arize.com/organizations/<ORG_ID>/spaces/<SPACE_ID>/dashboards/<DASHBOARD_ID>"
+  }
+}

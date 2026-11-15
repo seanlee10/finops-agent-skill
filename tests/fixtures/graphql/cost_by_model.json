@@ -1,0 +1,20 @@
+{
+ "data": {
+  "node": {
+   "costByModel": [
+    {
+     "llmModelName": "claude-opus-5-5",
+     "cost": 333.4655850000002
+    },
+    {
+     "llmModelName": "claude-sonnet-5-5",
+     "cost": 52.81954500000003
+    },
+    {
+     "llmModelName": "claude-haiku-5-5",
+     "cost": 0.599575
+    }
+   ]
+  }
+ }
+}

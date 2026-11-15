@@ -1,0 +1,13 @@
+user_id,name,team,cost_center,manager
+p.nair,Priya Nair,Platform,CC-100,j.okafor
+j.okafor,James Okafor,Platform,CC-100,
+m.chen,Mei Chen,Platform,CC-100,j.okafor
+a.kowalski,Adam Kowalski,Firmware,CC-200,r.silva
+r.silva,Rafael Silva,Firmware,CC-200,
+h.tanaka,Hiro Tanaka,Firmware,CC-200,r.silva
+s.ahmed,Sara Ahmed,Design Verification,CC-100,
+l.moreau,Luc Moreau,Design Verification,CC-100,s.ahmed
+k.park,Kyle Park,Design Verification,CC-100,s.ahmed
+d.ivanova,Daria Ivanova,Data Science,CC-200,
+t.mensah,Tom Mensah,Data Science,CC-200,d.ivanova
+e.rossi,Elena Rossi,Data Science,CC-200,d.ivanova

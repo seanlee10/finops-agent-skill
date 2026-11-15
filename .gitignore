@@ -1,0 +1,6 @@
+__pycache__/
+.pytest_cache/
+*.pyc
+.env
+synthetic/assistant-ledger.json
+synthetic/trickle-state.json

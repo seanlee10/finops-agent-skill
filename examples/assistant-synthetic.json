@@ -1,0 +1,113 @@
+{
+  "name": "assistant-synthetic",
+  "tz_offset_hours": 10,
+  "currency": "USD",
+  "projects": [
+    {
+      "id": "TW9kZWw6MTAwMjpkZW1v",
+      "name": "synth-assistant",
+      "space_id": "U3BhY2U6MTAwMTpkZW1v",
+      "space_name": "workshop",
+      "widgets": {
+        "attributes.session.id": "UGl2b3RUYWJsZVdpZGdldDoxMDAzOmRlbW8=",
+        "attributes.auth.status": "UGl2b3RUYWJsZVdpZGdldDoxMDA0OmRlbW8="
+      }
+    },
+    {
+      "id": "TW9kZWw6MTAwMzpkZW1v",
+      "name": "synth-search",
+      "space_id": "U3BhY2U6MTAwMTpkZW1v",
+      "space_name": "workshop",
+      "widgets": {
+        "attributes.session.id": "UGl2b3RUYWJsZVdpZGdldDoxMDA1OmRlbW8=",
+        "attributes.auth.status": "UGl2b3RUYWJsZVdpZGdldDoxMDA2OmRlbW8="
+      }
+    },
+    {
+      "id": "TW9kZWw6MTAwNDpkZW1v",
+      "name": "synth-valuation",
+      "space_id": "U3BhY2U6MTAwMjpkZW1v",
+      "space_name": "test",
+      "widgets": {
+        "attributes.session.id": "UGl2b3RUYWJsZVdpZGdldDoxMDA3OmRlbW8=",
+        "attributes.auth.status": "UGl2b3RUYWJsZVdpZGdldDoxMDA4OmRlbW8="
+      }
+    }
+  ],
+  "dimensions": [
+    {
+      "name": "by_space",
+      "levels": [
+        {
+          "name": "space",
+          "source": "space"
+        },
+        {
+          "name": "group",
+          "source": "map",
+          "mapping": {
+            "file": "assistant-synthetic/space_groups.csv",
+            "from": "space_name",
+            "to": "group"
+          }
+        },
+        {
+          "name": "cost_center",
+          "source": "map",
+          "mapping": {
+            "file": "assistant-synthetic/space_groups.csv",
+            "from": "group",
+            "to": "cost_center"
+          }
+        }
+      ]
+    },
+    {
+      "name": "by_project",
+      "levels": [
+        {
+          "name": "project",
+          "source": "project"
+        },
+        {
+          "name": "team",
+          "source": "map",
+          "mapping": {
+            "file": "assistant-synthetic/project_teams.csv",
+            "from": "project",
+            "to": "team"
+          }
+        }
+      ]
+    }
+  ],
+  "budgets": [
+    {
+      "dimension": "by_project",
+      "level": "team",
+      "file": "assistant-synthetic/budgets.csv",
+      "value_column": "team"
+    }
+  ],
+  "unit": "session",
+  "outcome": {
+    "rule": "eval_label",
+    "eval_name": "task_completion",
+    "completed_labels": [
+      "completed"
+    ],
+    "labels": [
+      "partial",
+      "failed"
+    ],
+    "sample_ok": true
+  },
+  "segments": [
+    "auth.status"
+  ],
+  "cost_agent": true,
+  "charts": {
+    "workshop": "https://app.arize.com/organizations/<ORG_ID>/spaces/<SPACE_ID>/dashboards/<DASHBOARD_ID>",
+    "test": "https://app.arize.com/organizations/<ORG_ID>/spaces/<SPACE_ID>/dashboards/<DASHBOARD_ID>"
+  }
+}
