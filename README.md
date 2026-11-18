@@ -1,78 +1,94 @@
 # finops-agent-skill
 
-Arize AX Managed Agent용 FinOps 스킬입니다. Arize에 기록된 LLM 비용을 조직 구조(팀, 코스트센터, 프로젝트, 스페이스 등)별로 집계해 차지백 리포트를 만들고, 예산 대비 소진율, 세션당·완료 세션당 비용, 열려 있는 Cost Agent 이슈를 함께 보여 줍니다.
+A FinOps skill for Arize AX managed agents. It totals the LLM cost recorded in Arize by your organisation's structure (team, cost center, project, space and so on) to produce chargeback reports. It also shows budget burn, cost per session and per completed session, and open Cost Agent issues.
 
-모든 수치는 Arize 집계에서 스크립트가 계산합니다. 에이전트는 스크립트 출력을 인용만 하고 직접 계산하거나 추정하지 않습니다.
+Every figure is computed by the scripts from Arize aggregates. The agent only quotes the script output and never calculates or estimates figures itself.
 
-## 구성
+This is sample code, not an officially supported Arize product.
 
-| 경로 | 내용 |
+## Contents
+
+| Path | Contents |
 | --- | --- |
-| `SKILL.md` | 에이전트가 따르는 지침 (실행 방법, 답변 규칙, 오류 처리) |
-| `agent/system_prompt.md` | Managed Agent 시스템 프롬프트 |
-| `finops/` | 리포트 엔진 (Python 표준 라이브러리만 사용) |
-| `scripts/finops.py` | 리포트 CLI |
-| `scripts/setup_widgets.py` | 리포트가 읽는 피벗 위젯을 만드는 1회성 설정 스크립트 |
-| `scripts/setup_charts.py` | 일별 비용 차트 대시보드를 만드는 선택 스크립트 |
-| `scripts/link_arize_key.py` | 읽기 전용 Arize API 키를 Managed Agent 샌드박스 연동으로 등록 |
-| `examples/` | 설정 예시와 조직도·예산 CSV |
-| `synthetic/` | 테스트용 합성 트레이스 생성기 |
+| `SKILL.md` | Instructions the agent follows (how to run, answer rules, error handling) |
+| `agent/system_prompt.md` | Managed agent system prompt |
+| `finops/` | Report engine (Python standard library only) |
+| `scripts/finops.py` | Report CLI |
+| `scripts/setup_widgets.py` | One-time setup that creates the pivot widgets the report reads |
+| `scripts/setup_charts.py` | Optional script that creates a daily cost chart dashboard |
+| `scripts/link_arize_key.py` | Registers a read-only Arize API key as a managed agent sandbox integration |
+| `examples/` | Example configurations, org charts and budget CSVs |
+| `synthetic/` | Synthetic trace generator for testing |
 
-## 사전 준비
+## Prerequisites
 
-- Python 3.10 이상 (외부 패키지 불필요)
-- 트레이스에 비용이 기록되어 있어야 합니다: `llm.cost.total`, `llm.token_count.total`, 세션 단위 집계를 하려면 `session.id`, 사용자별 차지백을 하려면 `user.id`
-- 프로젝트를 읽을 수 있는 Arize API 키
+- Python 3.10 or later (no external packages)
+- Cost recorded on your traces: `llm.cost.total` and `llm.token_count.total`, plus `session.id` for per-session figures and `user.id` for per-user chargeback
+- An Arize API key that can read the projects
 
-## 빠른 시작
+## Quick start
 
-### 1. 설정 파일 작성
+### 1. Write a configuration
 
-`examples/acme.json`을 복사해 수정합니다.
+Copy `examples/acme.json` and edit it:
 
-- `projects`: 집계할 Arize 프로젝트 (`id`, `name`, `space_id`, `space_name`)
-- `dimensions`: 집계 계층. 첫 단계는 `attribute:user.id`, `space`, `project` 중 하나이고, 이후 단계는 CSV 매핑으로 올라갑니다 (예: user → team → cost_center).
-- `budgets`: 예산 CSV. 예산을 매기는 집계 단계 이름, `month`, `budget_usd` 열로 구성합니다 (예: `team,month,budget_usd`).
-- `tz_offset_hours`: 월 경계를 계산할 시간대 (한국은 `9`)
+- `projects`: the Arize projects to include (`id`, `name`, `space_id`, `space_name`).
+- `dimensions`: the rollup hierarchy. The first level is one of `attribute:<key>` (for example `attribute:user.id`), `space` or `project`. Higher levels map upwards through a CSV (for example user → team → cost_center).
+- `budgets`: a budget CSV with the level being budgeted, `month` and `budget_usd` columns (for example `team,month,budget_usd`).
+- `tz_offset_hours`: the time zone month boundaries are computed in (8 for Singapore).
 
-### 2. 피벗 위젯 생성 (최초 1회)
+### 2. Create the pivot widgets (once)
 
-리포트는 대시보드의 피벗 위젯에서 정확한 집계를 읽습니다. 아래 스크립트가 위젯을 만들고 ID를 설정 파일에 기록합니다.
+The report reads exact aggregates from pivot widgets on a dashboard. This script creates them and writes their IDs into the configuration.
 
 ```bash
 export ARIZE_API_KEY=<your-arize-api-key>
-python3 scripts/setup_widgets.py --config my-config.json --dry-run   # 생성할 내용 확인
+python3 scripts/setup_widgets.py --config my-config.json --dry-run   # show what would be created
 python3 scripts/setup_widgets.py --config my-config.json
 ```
 
-### 3. 리포트 실행
+### 3. Run the report
 
 ```bash
 python3 scripts/finops.py --config my-config.json --format md
-python3 scripts/finops.py --config my-config.json --start 2026-11-01T00:00+09:00 --end 2026-11-15T00:00+09:00
+python3 scripts/finops.py --config my-config.json --start 2026-11-01T00:00+08:00 --end 2026-11-15T00:00+08:00
 ```
 
-- 기본 기간은 설정 시간대 기준 이번 달 1일부터 현재까지입니다.
-- `--format json`은 후속 질문용, `--format investigation`은 정기 실행 시 이슈 카드가 포함된 조사 파일용입니다.
-- 셀프호스팅 Arize나 다른 리전을 쓰는 경우 `FINOPS_GRAPHQL_URL`로 GraphQL 주소를 지정합니다 (예: `https://<your-arize-host>/graphql`).
+- The default window is month to date in the configuration's time zone.
+- `--format json` is for follow-up questions, and `--format investigation` produces the investigation file with issue cards used by scheduled runs.
+- For self-hosted Arize or another region, set the GraphQL endpoint with `FINOPS_GRAPHQL_URL` (for example `https://<your-arize-host>/graphql`).
 
-## Managed Agent로 배포
+## Evaluation cost by space
 
-1. Arize에서 Custom Managed Agent를 만들고 이 저장소를 스킬로 연결합니다. 시스템 프롬프트는 `agent/system_prompt.md`를 사용합니다.
-2. 대시보드 읽기 권한이 있는 **읽기 전용** API 키를 샌드박스 연동으로 한 번 등록합니다. 키는 환경 변수 `FINOPS_READONLY_KEY`나 숨김 입력으로 받고 출력하지 않습니다.
+`examples/eval-cost.json` reports what LLM-as-a-judge evaluations cost, by space, team, cost center, evaluation task and judge model. It reads each space's **Eval Traces** project, where every judge call is recorded with its cost, model and task when eval traces are on for the task.
+
+1. Add one entry per space to `projects`, using that space's **Eval Traces** project ID and the space name.
+2. Map space names to teams and cost centers in `examples/eval-cost/teams.csv`, and set monthly budgets per team in `examples/eval-cost/budgets.csv`.
+3. Run `setup_widgets.py` and then `finops.py` as above.
+
+Notes:
+
+- Only evaluations run with eval traces on are counted. Judge calls made with eval traces off are billed by the provider but leave no cost in Arize.
+- Judge calls are not grouped into sessions, so ignore the unit economics section for this configuration.
+- Costs come from the model prices Arize applies to each span. If a judge model shows no spend, check that Arize has a price configured for it, which matters most for models served through a custom endpoint.
+
+## Deploy as a managed agent
+
+1. Create a custom managed agent in Arize and connect this repository as a skill. Use `agent/system_prompt.md` as the system prompt.
+2. Register a **read-only** API key with dashboard read access as a sandbox integration, once. The script takes the key from the `FINOPS_READONLY_KEY` environment variable or a hidden prompt and never prints it.
 
    ```bash
    python3 scripts/link_arize_key.py --account-id <ACCOUNT_ID> --space-id <SPACE_ID>
    ```
 
-3. 에이전트 설정에서 위 연동과 AI Provider를 선택하고, 정기 실행(예: 매주 월요일)을 설정합니다.
+3. In the agent settings, select that integration and an AI provider, and set a schedule (for example every Monday).
 
-샌드박스 안에서는 스크립트가 `https://graphql.sandboxcontroller/graphql`을 호출하며, 프록시가 인증 정보를 주입합니다.
+Inside the sandbox the scripts call `https://graphql.sandboxcontroller/graphql`, and the proxy injects the credential.
 
-## 테스트
+## Tests
 
 ```bash
 python3 -m pytest
 ```
 
-합성 데이터로 직접 시험해 보려면 `synthetic/assistant_gen.py --dry-run`으로 생성 내용을 확인한 뒤 `--send`로 Arize에 전송합니다. `examples/assistant-synthetic.json`이 이 데이터에 맞춘 설정입니다.
+To try it on synthetic data, preview with `synthetic/assistant_gen.py --dry-run`, then send it to Arize with `--send`. `examples/assistant-synthetic.json` is the matching configuration.

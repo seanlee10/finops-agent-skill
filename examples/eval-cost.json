@@ -1,0 +1,44 @@
+{
+  "name": "eval-cost",
+  "tz_offset_hours": 8,
+  "currency": "USD",
+  "projects": [
+    {
+      "id": "<EVAL_TRACES_PROJECT_ID>",
+      "name": "Eval Traces",
+      "space_id": "<SPACE_ID>",
+      "space_name": "team-a-space"
+    },
+    {
+      "id": "<EVAL_TRACES_PROJECT_ID>",
+      "name": "Eval Traces",
+      "space_id": "<SPACE_ID>",
+      "space_name": "team-b-space"
+    }
+  ],
+  "dimensions": [
+    {
+      "name": "org",
+      "levels": [
+        {"name": "space", "source": "space"},
+        {"name": "team", "source": "map", "mapping": {"file": "eval-cost/teams.csv", "from": "space", "to": "team"}},
+        {"name": "cost_center", "source": "map", "mapping": {"file": "eval-cost/teams.csv", "from": "team", "to": "cost_center"}}
+      ]
+    },
+    {
+      "name": "task",
+      "levels": [{"name": "task", "source": "attribute:metadata.task_name"}]
+    },
+    {
+      "name": "model",
+      "levels": [{"name": "model", "source": "attribute:llm.model_name"}]
+    }
+  ],
+  "budgets": [
+    {"dimension": "org", "level": "team", "file": "eval-cost/budgets.csv", "value_column": "team"}
+  ],
+  "unit": "trace",
+  "outcome": {"rule": "none"},
+  "segments": [],
+  "cost_agent": false
+}
